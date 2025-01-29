@@ -27,7 +27,8 @@ class ArticleRequest extends FormRequest
             'date' => 'nullable|date',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'search' => 'nullable|string'
+            'search' => 'nullable|string',
+            'author' => 'nullable|string'
         ];
     }
 }

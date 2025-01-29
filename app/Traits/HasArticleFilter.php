@@ -32,6 +32,9 @@ trait HasArticleFilter
         ->when($request->has('source') && !empty($request->source), function($query) use($request) {
             return $query->where('source', $request->source);
         })
+        ->when($request->has('author') && !empty($request->author), function($query) use($request) {
+            return $query->where('author', $request->author);
+        })
         ->when($request->has('date') && !empty($request->date), function($query) use($request) {
             return $query->whereDate('published_at', Carbon::parse($request->date)->format('Y-m-d'));
         })
@@ -70,7 +73,8 @@ trait HasArticleFilter
         function($query) use ($preferences, $request) {
             return $query->whereIn('source', $preferences->sources);
         })
-        ->when($preferences->authors, function($query) use ($preferences, $request) {
+        ->when($preferences->authors && empty($request->author ?? null),
+        function($query) use ($preferences, $request) {
             return $query->whereIn('author', $preferences->authors);
         });
 
