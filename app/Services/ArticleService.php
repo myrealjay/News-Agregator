@@ -26,19 +26,19 @@ class ArticleService
             $allCacheKeys = Cache::get('allkeys');
         }
 
-        // if (in_array($cacheKey, $allCacheKeys)) {
-        //     return Cache::get($cacheKey);
-        // }
+        if (in_array($cacheKey, $allCacheKeys)) {
+            return Cache::get($cacheKey);
+        }
 
         //this key has not been cached before so fetch and cache.
 
         $articles = Article::filter($request)->paginate($perPage);
 
-        // if (count($articles)) {
-        //     Cache::put($cacheKey, $articles, now()->addDay());
-        //     $allCacheKeys[] = $cacheKey;
-        //     Cache::put('allkeys', $allCacheKeys);
-        // }
+        if (count($articles)) {
+            Cache::put($cacheKey, $articles, now()->addDay());
+            $allCacheKeys[] = $cacheKey;
+            Cache::put('allkeys', $allCacheKeys);
+        }
 
         return $articles;
     }
