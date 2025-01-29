@@ -2,8 +2,8 @@
 
 return [
     'strategies' => [
-        'newsapi',
         'guardian',
-        'nytimes'
+        'nytimes',
+        'newsapi'
     ]
 ];

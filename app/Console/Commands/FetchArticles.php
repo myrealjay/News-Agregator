@@ -5,8 +5,7 @@ namespace App\Console\Commands;
 use App\Helpers\NewsProviderResolver;
 use App\Models\Article;
 use Illuminate\Console\Command;
-
-use function App\Helpers\resolveNewsProvider;
+use Illuminate\Support\Facades\Cache;
 
 class FetchArticles extends Command
 {
@@ -34,8 +33,11 @@ class FetchArticles extends Command
         $strategies = config('aggregator.strategies');
 
         foreach($strategies as $strategy) {
+            $this->info("fetching for $strategy");
+
             $provider = NewsProviderResolver::resolveNewsProvider($strategy);
             $response = $provider->fetchArticles(['q' => 'technology OR fashion']);
+
             foreach($response as $article) {
                 $data = $provider->formatData(($article));
 
@@ -46,6 +48,30 @@ class FetchArticles extends Command
             }
         }
 
+        $this->deleteCahceKeys();
         $this->info('Done fetching articles.');
+    }
+
+    /**
+     * Forget cahced keys.
+     *
+     * @return void
+     */
+    protected function deleteCahceKeys(): void
+    {
+         //Remove cache so new items can reflect
+         $allcacheKeys = [];
+         if (Cache::has('allkeys')) {
+             $allcacheKeys = Cache::get('allkeys');
+         }
+
+         if (count($allcacheKeys)) {
+             foreach($allcacheKeys as $key) {
+                Cache::forget($key);
+             }
+
+             Cache::forget('allkeys');
+         }
+
     }
 }

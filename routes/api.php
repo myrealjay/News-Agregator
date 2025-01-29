@@ -8,5 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('articles', [ArticleController::class, 'index']);
-Route::get('articles/{id}', [ArticleController::class, 'index']);
+Route::group(['prefix' => 'articles'], function() {
+    Route::get('', [ArticleController::class, 'index']);
+    Route::get('{id}', [ArticleController::class, 'show']);
+});
