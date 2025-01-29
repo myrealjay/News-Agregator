@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Preference;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -40,5 +42,18 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Create user with comments.
+     *
+     * @param int $count
+     * @return UserFactory
+     */
+    public function withPreferences(int $count = 1)
+    {
+        return $this->afterCreating(function (User $user) use ($count) {
+            Preference::factory($count)->create(['user_id' => $user->id]);
+        });
     }
 }

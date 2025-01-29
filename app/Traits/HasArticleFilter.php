@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Http\Requests\ArticleRequest;
-use App\Models\Preference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -63,17 +62,17 @@ trait HasArticleFilter
 
         if (!$preferences) return $query;
 
-        if ( $preferences->categories && !isset($request->category)) {
-            $query->whereIn('category', $preferences->categories);
-        }
-
-        if ($preferences->sources && !isset($query->source)) {
-            $query->whereIn('source', $preferences->sources);
-        }
-
-        if ($preferences->authors) {
-            $query->whereIn('source', $preferences->sources);
-        }
+        $query->when($preferences->categories && empty($request->category ?? null),
+        function($query) use($preferences, $request) {
+            return $query->whereIn('category', $preferences->categories);
+        })
+        ->when($preferences->sources && empty($request->source ?? null),
+        function($query) use ($preferences, $request) {
+            return $query->whereIn('source', $preferences->sources);
+        })
+        ->when($preferences->authors, function($query) use ($preferences, $request) {
+            return $query->whereIn('author', $preferences->authors);
+        });
 
         return $query;
     }
