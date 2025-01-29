@@ -4,15 +4,12 @@ namespace Tests\Unit;
 
 use App\Contracts\NewsProviderContract;
 use App\Services\GuardianService;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GuardianServiceTest extends TestCase
 {
-   /**
-     * Test that NewsApiService can format data correctly.
-     *
-     * @test
-     */
+    #[Test]
     public function it_can_format_data_correctly(): void
     {
         $guardianService = new GuardianService();
@@ -25,11 +22,7 @@ class GuardianServiceTest extends TestCase
         $this->assertEquals($formattedData['title'], $originalData['webTitle']);
     }
 
-    /**
-     * Test that NewAPiService implements NewsProviderContract.
-     *
-     * @test
-     */
+    #[Test]
     public function verify_that_news_api_service_implements_news_provider_contract(): void
     {
         $guardianService = new GuardianService();

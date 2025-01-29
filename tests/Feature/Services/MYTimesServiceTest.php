@@ -4,6 +4,7 @@ namespace Tests\Feature\services;
 
 use App\Services\NYTimesService;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Traits\HasApiResponse;
 use Tests\TestCase;
 
@@ -11,11 +12,7 @@ class MYTimesServiceTest extends TestCase
 {
     use HasApiResponse;
 
-    /**
-     * Test that the MYTimesService can make api calls to new york times API and return response.
-     *
-     * @test
-     */
+    #[Test]
     public function it_makes_api_calls_correctly_and_returns_response(): void
     {
         $data = $this->getApiResponse('nytimes');
