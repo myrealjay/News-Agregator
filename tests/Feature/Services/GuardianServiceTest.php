@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Services;
 
 use App\Services\GuardianService;
 use Illuminate\Support\Facades\Http;
-use Tests\Feature\Traits\HasGuardianresponse;
+use Tests\Feature\Traits\HasApiResponse;
 use Tests\TestCase;
 
 class GuardianServiceTest extends TestCase
 {
-    use HasGuardianresponse;
+    use HasApiResponse;
 
     /**
      * test that the GuardianService can make api calls to Guardian API and return response.
@@ -18,7 +18,7 @@ class GuardianServiceTest extends TestCase
      */
     public function it_makes_api_calls_correctly_and_returns_response(): void
     {
-        $data = $this->getApiResponse();
+        $data = $this->getApiResponse('guardian');
         Http::fake([
             'https://content.guardianapis.com/*' => Http::response($data, 200)
         ]);

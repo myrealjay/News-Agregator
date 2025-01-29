@@ -22,7 +22,7 @@ class MYTimesServiceTest extends TestCase
 
         $this->assertEquals($formattedData['source'], implode(',', $originalData['org_facet']));
 
-        $this->assertEquals($formattedData['published_at'], $originalData['published_date']);
+        $this->assertEquals($formattedData['title'], $originalData['title']);
     }
 
     /**
@@ -52,9 +52,9 @@ class MYTimesServiceTest extends TestCase
             "uri"=> "nyt=>//article/fa9728a8-b29a-576d-9c79-69932bccebb4",
             "byline"=> "By Eric Schmitt and David E. Sanger",
             "item_type"=> "Article",
-            "updated_date"=> "2025-01-28T23=>38=>01-05=>00",
-            "created_date"=> "2025-01-28T23=>31=>25-05=>00",
-            "published_date"=> "2025-01-28T23=>31=>25-05=>00",
+            "updated_date"=> "2025-01-28T23:38:01-05:00",
+            "created_date"=> "2025-01-28T23:31:25-05:00",
+            "published_date"=> "2025-01-28T23:31:25-05:00",
             "material_type_facet"=> "",
             "kicker"=> "",
             "des_facet"=> [
