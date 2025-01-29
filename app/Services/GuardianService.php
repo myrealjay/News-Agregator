@@ -18,7 +18,7 @@ class GuardianService implements NewsProviderContract
 
         $response = Http::get(
             "{$baseUrl}/search",
-            array_merge($params, ['apiKey' => $apiKey])
+            array_merge($params, ['api-key' => $apiKey])
             )->json();
 
         return $response['response']['results'] ?? [];

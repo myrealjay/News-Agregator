@@ -19,7 +19,7 @@ class NYTimesService implements NewsProviderContract
 
         $response = Http::get(
             "{$baseUrl}/svc/topstories/v2/home.json",
-            array_merge($params, ['apiKey' => $apiKey])
+            array_merge($params, ['api-key' => $apiKey])
             )->json();
 
         return $response['results'] ?? [];

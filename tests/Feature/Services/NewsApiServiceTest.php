@@ -4,6 +4,7 @@ namespace Tests\Feature\Services;
 
 use App\Services\NewsAPIService;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Traits\HasApiResponse;
 use Tests\TestCase;
 
@@ -11,11 +12,7 @@ class NewsApiServiceTest extends TestCase
 {
     use HasApiResponse;
 
-    /**
-     * test that the NewsAPIService can make api calls to news PAI and return response.
-     *
-     * @test
-     */
+    #[Test]
     public function it_makes_api_calls_correctly_and_returns_response(): void
     {
         $data = $this->getApiResponse('newsapi');

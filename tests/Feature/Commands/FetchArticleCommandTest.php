@@ -6,6 +6,7 @@ use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Traits\HasApiResponse;
 use Tests\TestCase;
 
@@ -14,11 +15,7 @@ class FetchArticleCommandTest extends TestCase
     use RefreshDatabase;
     use HasApiResponse;
 
-    /**
-     * Check that the command actually fetches data.
-     *
-     * @test
-     */
+    #[Test]
     public function it_fetches_data_from_sources_when_command_is_called(): void
     {
         $this->assertCount(0, Article::all());

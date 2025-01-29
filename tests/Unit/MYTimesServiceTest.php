@@ -4,15 +4,12 @@ namespace Tests\Unit;
 
 use App\Contracts\NewsProviderContract;
 use App\Services\NYTimesService;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class MYTimesServiceTest extends TestCase
 {
-    /**
-     * Test that MYTimesService can format data correctly.
-     *
-     * @test
-     */
+    #[Test]
     public function it_can_format_data_correctly(): void
     {
         $nyTimesService = new NYTimesService();
@@ -25,22 +22,14 @@ class MYTimesServiceTest extends TestCase
         $this->assertEquals($formattedData['title'], $originalData['title']);
     }
 
-    /**
-     * Test that MYTimesService implements NewsProviderContract.
-     *
-     * @test
-     */
+    #[Test]
     public function verify_that_news_api_service_implements_news_provider_contract(): void
     {
         $newsApiService = new NYTimesService();
         $this->assertTrue($newsApiService instanceof NewsProviderContract);
     }
 
-    /**
-     * Get the data.
-     *
-     * @return array
-     */
+    #[Test]
     protected function getData(): array
     {
         return   [
