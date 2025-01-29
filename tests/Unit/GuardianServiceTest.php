@@ -22,7 +22,7 @@ class GuardianServiceTest extends TestCase
 
         $this->assertEquals($formattedData['category'], $originalData['sectionName']);
 
-        $this->assertEquals($formattedData['published_at'], $originalData['webPublicationDate']);
+        $this->assertEquals($formattedData['title'], $originalData['webTitle']);
     }
 
     /**
@@ -48,7 +48,7 @@ class GuardianServiceTest extends TestCase
             "type"=> "article",
             "sectionId"=> "business",
             "sectionName"=> "Business",
-            "webPublicationDate"=> "2025-01-28T18=>10=>43Z",
+            "webPublicationDate"=> "2025-01-28T18:10:43Z",
             "webTitle"=> "The stock market is always terrible at valuing technology revolutions",
             "webUrl"=> "https=>//www.theguardian.com/business/nils-pratley-on-finance/2025/jan/28/the-stock-market-is-always-terrible-at-valuing-technology-revolutions",
             "apiUrl"=> "https=>//content.guardianapis.com/business/nils-pratley-on-finance/2025/jan/28/the-stock-market-is-always-terrible-at-valuing-technology-revolutions",

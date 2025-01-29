@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Services;
 
 use App\Services\NewsAPIService;
 use Illuminate\Support\Facades\Http;
-use Tests\Feature\Traits\HasNewsAPIResponse;
+use Tests\Feature\Traits\HasApiResponse;
 use Tests\TestCase;
 
 class NewsApiServiceTest extends TestCase
 {
-    use HasNewsAPIResponse;
+    use HasApiResponse;
 
     /**
      * test that the NewsAPIService can make api calls to news PAI and return response.
@@ -18,7 +18,7 @@ class NewsApiServiceTest extends TestCase
      */
     public function it_makes_api_calls_correctly_and_returns_response(): void
     {
-        $data = $this->getApiResponse();
+        $data = $this->getApiResponse('newsapi');
         Http::fake([
             'https://newsapi.org/*' => Http::response($data, 200)
         ]);

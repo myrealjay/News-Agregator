@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\NewsProviderContract;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class NewsAPIService implements NewsProviderContract
@@ -37,7 +38,7 @@ class NewsAPIService implements NewsProviderContract
             'category' => $data['category'] ?? 'General',
             'image_url' => $data['urlToImage'],
             'url' => $data['url'],
-            'published_at' => $data['publishedAt']
+            'published_at' => Carbon::parse($data['publishedAt'])
         ];
     }
 }

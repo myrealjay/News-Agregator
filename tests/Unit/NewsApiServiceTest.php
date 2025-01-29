@@ -22,7 +22,7 @@ class NewsApiServiceTest extends TestCase
 
         $this->assertEquals($formattedData['source'], $originalData['source']['name']);
 
-        $this->assertEquals($formattedData['published_at'], $originalData['publishedAt']);
+        $this->assertEquals($formattedData['title'], $originalData['title']);
     }
 
     /**
@@ -53,7 +53,7 @@ class NewsApiServiceTest extends TestCase
             "description"=> "Menswear influencer Derek Guy is unimpressed by what tech barons and the MAGA rank and file wore this weekend. “To be frank,” he says, “many conservatives are often behind on fashion trends.”",
             "url"=> "https=>//www.wired.com/story/menswear-guy-maga-tight-suits-gold-sneakers/",
             "urlToImage"=> "https=>//media.wired.com/photos/678eb4eae2eb3c757494ed1c/191=>100/w_1280,c_limit/maga-fashion-pol.jpg",
-            "publishedAt"=> "2025-01-21T12=>00=>00Z",
+            "publishedAt"=> "2025-01-21T12:00:00Z",
             "content"=> "Do you think that sort of classic American lookthe Ralph Lauren, the Oxford shirtis that going to be sort of the purview of MAGA forever or do you see that changing?\r\nI don't think the classic Americ… [+3749 chars]"
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\NewsProviderContract;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class GuardianService implements NewsProviderContract
@@ -37,7 +38,7 @@ class GuardianService implements NewsProviderContract
             'category' => $data['sectionName'],
             'image_url' => null,
             'url' => $data['webUrl'],
-            'published_at' => $data['webPublicationDate']
+            'published_at' => Carbon::parse($data['webPublicationDate'])
         ];
     }
 }

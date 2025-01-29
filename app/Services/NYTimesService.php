@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\NewsProviderContract;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class NYTimesService implements NewsProviderContract
@@ -38,7 +39,7 @@ class NYTimesService implements NewsProviderContract
             'category' => $data['item_type'],
             'image_url' => $this->getImageUrl($data['multimedia']),
             'url' => $data['url'],
-            'published_at' => $data['published_date']
+            'published_at' => Carbon::parse($data['published_date'])
         ];
     }
 
