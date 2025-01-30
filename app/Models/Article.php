@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasArticleFilter;
+    use HasUUid;
 
     protected $keyType = 'string';
     public $incrementing = false;
     protected $primaryKey = 'id';
 
-    use HasUUid;
     /**
      * The attributes that are mass assignable.
      *

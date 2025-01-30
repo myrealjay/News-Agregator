@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Preference;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -19,9 +20,9 @@ class PreferenceFactory extends Factory
     {
         return [
             'user_id' => Str::uuid(),
-            'sources' => ["Gizmodo.com", "The Verge"],
-            'authors' => ['Tom Warren', 'Brittany Vincent','Amanda Krause'],
-            'categories' => ['US news', 'Article', 'Books']
+            'sources' => $this->faker->words(5),
+            'authors' => array_map(fn () => $this->faker->name, range(1, 5)),
+            'categories' => $this->faker->words(5)
         ];
     }
 }
