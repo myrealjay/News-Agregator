@@ -23,7 +23,7 @@ trait HasArticleFilter
         function($query) use ($request) {
             return $query->where('title', 'LIKE', "%{$request->search}%")
             ->orWhere('description', 'LIKE', "%{$request->search}%")
-            ->orWhere('description', 'LIKE', "%{$request->search}%");
+            ->orWhere('content', 'LIKE', "%{$request->search}%");
         })
         ->when($request->filled('category'), function($query) use($request) {
             return $query->where('category', $request->category);

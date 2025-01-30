@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Models\Traits\HasUUid;
 use App\Traits\HasArticleFilter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
     use HasArticleFilter;
+    use HasFactory;
     use HasUUid;
 
     protected $keyType = 'string';
