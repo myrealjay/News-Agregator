@@ -30,13 +30,13 @@ class FetchArticles extends Command
     {
         $this->info('Started fetching articles.');
 
-        $strategies = config('aggregator.strategies');
+        $strategies = config('aggregator.news_sources');
 
         foreach($strategies as $strategy) {
             $this->info("fetching for $strategy");
 
             $provider = NewsProviderResolver::resolveNewsProvider($strategy);
-            $response = $provider->fetchArticles(['q' => 'technology OR fashion']);
+            $response = $provider->fetchArticles(config('aggregator.query_parameters'));
 
             foreach($response as $article) {
                 $data = $provider->formatData(($article));

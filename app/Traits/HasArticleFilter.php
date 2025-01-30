@@ -19,29 +19,32 @@ trait HasArticleFilter
      */
     public function scopeFilter(Builder $query, ArticleRequest $request): builder
     {
-        $query = $query->when($request->has("search") && !empty($request->search),
-        function($query) use ($request, &$cacheKey) {
-            $cacheKey.= "_".str_replace(' ','', $request->search);
+        $query = $query->when($request->filled("search"),
+        function($query) use ($request) {
             return $query->where('title', 'LIKE', "%{$request->search}%")
             ->orWhere('description', 'LIKE', "%{$request->search}%")
             ->orWhere('description', 'LIKE', "%{$request->search}%");
         })
-        ->when($request->has('category') && !empty($request->category), function($query) use($request) {
+        ->when($request->filled('category'), function($query) use($request) {
             return $query->where('category', $request->category);
         })
-        ->when($request->has('source') && !empty($request->source), function($query) use($request) {
+        ->when($request->filled('source'), function($query) use($request) {
             return $query->where('source', $request->source);
         })
-        ->when($request->has('author') && !empty($request->author), function($query) use($request) {
+        ->when($request->filled('author'), function($query) use($request) {
             return $query->where('author', $request->author);
         })
-        ->when($request->has('date') && !empty($request->date), function($query) use($request) {
+        ->when($request->filled('date'), function($query) use($request) {
             return $query->whereDate('published_at', Carbon::parse($request->date)->format('Y-m-d'));
         })
-        ->when($request->has('start_date') && $request->has('end_date'), function($query) use($request) {
+        ->when($request->filled('start_date') && $request->filled('end_date'),
+        function($query) use($request) {
             return $query->whereBetween(
                 'published_at',
-                [Carbon::parse($request->start_date)->format('Y-m-d'), Carbon::parse($request->end_date)->format('Y-m-d')]
+                [
+                    Carbon::parse($request->start_date)->format('Y-m-d'),
+                    Carbon::parse($request->end_date)->format('Y-m-d')
+                    ]
             );
         });
 
@@ -65,15 +68,15 @@ trait HasArticleFilter
 
         if (!$preferences) return $query;
 
-        $query->when($preferences->categories && empty($request->category ?? null),
+        $query->when($preferences->categories && !$request->filled('category'),
         function($query) use($preferences, $request) {
             return $query->whereIn('category', $preferences->categories);
         })
-        ->when($preferences->sources && empty($request->source ?? null),
+        ->when($preferences->sources && !$request->filled('source'),
         function($query) use ($preferences, $request) {
             return $query->whereIn('source', $preferences->sources);
         })
-        ->when($preferences->authors && empty($request->author ?? null),
+        ->when($preferences->authors && $request->filled('author'),
         function($query) use ($preferences, $request) {
             return $query->whereIn('author', $preferences->authors);
         });

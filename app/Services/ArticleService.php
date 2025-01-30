@@ -54,24 +54,32 @@ class ArticleService
         $key = 'articles';
         $user = Auth::user();
 
-        if ($request->has('category') && !empty($request->category)) {
+        if ($request->filled('category')) {
             $key .= '_'. $request->category;
         }
 
-        if ($request->has('date') && !empty($request->date)) {
+        if ($request->filled('date')) {
             $key .= '_' . str_replace(['-', '/'], '', $request->date);
         }
 
-        if ($request->has('source') && !empty($request->source)) {
+        if ($request->filled('source')) {
             $key .= '_' . $request->source;
         }
 
-        if ($request->has('per_page') && !empty($request->per_page)) {
+        if ($request->filled('per_page')) {
             $key .= '_' . $request->per_page;
         }
 
-        if ($request->has('page') && !empty($request->page)) {
+        if ($request->filled('page')) {
             $key .= '_' . $request->page;
+        }
+
+        if ($request->filled('author')) {
+            $key .= '_' . $request->author;
+        }
+
+        if ($request->filled('search')) {
+            $key .= '_' . str_replace(' ','',$request->search);
         }
 
         if ($user) {

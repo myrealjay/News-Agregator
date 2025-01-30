@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\NewsProviderContract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class NewsAPIService implements NewsProviderContract
 {
@@ -16,10 +17,15 @@ class NewsAPIService implements NewsProviderContract
         $baseUrl = trim(config('services.newsapi.baseUrl'), '/');
         $apiKey = config('services.newsapi.apiKey');
 
-        $response = Http::get(
+        try {
+            $response = Http::get(
             "{$baseUrl}/v2/everything",
             array_merge($params, ['apiKey' => $apiKey])
             )->json();
+        } catch(\Exception $exception) {
+            Log::error($exception);
+            return [];
+        }
 
         return $response['articles'] ?? [];
     }
@@ -38,7 +44,7 @@ class NewsAPIService implements NewsProviderContract
             'category' => $data['category'] ?? 'General',
             'image_url' => $data['urlToImage'],
             'url' => $data['url'],
-            'published_at' => Carbon::parse($data['publishedAt'])
+            'published_at' => Carbon::parse($data['publishedAt'])->format('Y-m-d H:i:s')
         ];
     }
 }

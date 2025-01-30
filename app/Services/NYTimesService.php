@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\NewsProviderContract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class NYTimesService implements NewsProviderContract
 {
@@ -17,10 +18,15 @@ class NYTimesService implements NewsProviderContract
         $baseUrl = trim(config('services.nytimes.baseUrl'), '/');
         $apiKey = config('services.nytimes.apiKey');
 
-        $response = Http::get(
+        try {
+            $response = Http::get(
             "{$baseUrl}/svc/topstories/v2/home.json",
             array_merge($params, ['api-key' => $apiKey])
             )->json();
+        } catch(\Exception $exception) {
+            Log::error($exception);
+            return [];
+        }
 
         return $response['results'] ?? [];
     }
@@ -39,7 +45,7 @@ class NYTimesService implements NewsProviderContract
             'category' => $data['item_type'],
             'image_url' => $this->getImageUrl($data['multimedia']),
             'url' => $data['url'],
-            'published_at' => Carbon::parse($data['published_date'])
+            'published_at' => Carbon::parse($data['published_date'])->format('Y-m-d H:i:s')
         ];
     }
 

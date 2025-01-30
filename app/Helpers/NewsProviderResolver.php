@@ -17,7 +17,7 @@ class NewsProviderResolver
      */
     public static function resolveNewsProvider(string $strategy) : NewsProviderContract
     {
-        if (!in_array($strategy, config('aggregator.strategies'))) {
+        if (!in_array($strategy, config('aggregator.news_sources'))) {
             throw new InvalidStrategyException("Unsopported news strategy: {$strategy}");
         }
 
