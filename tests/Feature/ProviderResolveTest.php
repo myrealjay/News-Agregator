@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Exceptions\InvalidStrategyException;
+use App\Exceptions\InvalidSourceException;
 use App\Helpers\NewsProviderResolver;
 use App\Services\GuardianService;
 use PHPUnit\Framework\Attributes\Test;
@@ -29,6 +29,6 @@ class ProviderResolveTest extends TestCase
             $exception = $e;
         }
 
-        $this->assertTrue($exception instanceof InvalidStrategyException);
+        $this->assertTrue($exception instanceof InvalidSourceException);
     }
 }

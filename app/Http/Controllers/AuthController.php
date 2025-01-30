@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use App\Traits\HasResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    use HasResponse;
+
     /**
      * Login User.
      *
@@ -25,9 +28,13 @@ class AuthController extends Controller
             throw new AuthenticationException('Invalid credentials');
         }
 
-        return response()->json([
-            'access_token' => $user->createToken('auth_token')->plainTextToken,
-            'user' => $user,
-        ]);
+        return $this->sendResponse(
+            true,
+            'Login successful',
+            [
+                'access_token' => $user->createToken('auth_token')->plainTextToken,
+                'user' => $user,
+            ]
+        );
     }
 }

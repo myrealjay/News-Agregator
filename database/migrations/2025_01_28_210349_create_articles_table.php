@@ -28,8 +28,11 @@ return new class extends Migration
             $table->index('author');
             $table->index('source');
             $table->index('category');
-            $table->fullText('content');
-            $table->fullText('description');
+
+            if (config('app.env') !== 'testing') {
+                $table->fullText('content');
+                $table->fullText('description');
+            }
         });
     }
 
