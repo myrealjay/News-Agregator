@@ -3,25 +3,24 @@
 namespace App\Helpers;
 
 use App\Contracts\NewsProviderContract;
-use App\Exceptions\InvalidStrategyException;
-
+use App\Exceptions\InvalidSourceException;
 
 class NewsProviderResolver
 {
     /**
      * Resolves the strategy class.
      *
-     * @param string $strategy
-     * @throws InvalidStrategyException
+     * @param string $source
+     * @throws InvalidSourceException
      * @return NewsProviderContract
      */
-    public static function resolveNewsProvider(string $strategy) : NewsProviderContract
+    public static function resolveNewsProvider(string $source) : NewsProviderContract
     {
-        if (!in_array($strategy, config('aggregator.news_sources'))) {
-            throw new InvalidStrategyException("Unsopported news strategy: {$strategy}");
+        if (!in_array($source, config('aggregator.news_sources'))) {
+            throw new InvalidSourceException("Unsopported news source: {$source}");
         }
 
-        return app($strategy);
+        return app($source);
     }
 }
 

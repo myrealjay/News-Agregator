@@ -16,7 +16,7 @@ class ArticleService
      * @param ArticleRequest $request
      * @return LengthAwarePaginator
      */
-    public function index(ArticleRequest $request) : LengthAwarePaginator
+    public function fetchArticles(ArticleRequest $request) : LengthAwarePaginator
     {
         $perPage = $request->get('per_page', 50);
         $cacheKey = $this->buildCacheKey($request);
@@ -41,6 +41,17 @@ class ArticleService
         }
 
         return $articles;
+    }
+
+    /**
+     * Get Article by ID.
+     *
+     * @param string $articleId
+     * @return Article
+     */
+    public function getArticleById(string $articleId): ? Article
+    {
+        return Article::findOrFail($articleId);
     }
 
     /**
@@ -87,16 +98,5 @@ class ArticleService
         }
 
         return $key;
-    }
-
-    /**
-     * Get Article by ID.
-     *
-     * @param string $articleId
-     * @return Article
-     */
-    public function show(string $articleId): ? Article
-    {
-        return Article::findOrFail($articleId);
     }
 }

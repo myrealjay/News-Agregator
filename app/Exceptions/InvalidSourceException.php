@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidStrategyException extends Exception
+class InvalidSourceException extends Exception
 {
     //
 }

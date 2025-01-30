@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
-use App\Models\Article;
 use App\Services\ArticleService;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\HasResponse;
+use Illuminate\Http\JsonResponse;
 
 class ArticleController extends Controller
 {
+    use HasResponse;
+
+    /**
+     * Article service instance
+     * @var ArticleService
+     */
     protected ArticleService $articleService;
 
     /**
@@ -25,21 +31,23 @@ class ArticleController extends Controller
      * Fetch all articles.
      *
      * @param ArticleRequest $request
-     * @return LengthAwarePaginator
+     * @return JsonResponse
      */
-    public function index(ArticleRequest $request): LengthAwarePaginator
+    public function index(ArticleRequest $request): JsonResponse
     {
-        return  $this->articleService->index($request);
+        $articles = $this->articleService->fetchArticles($request);
+        return  $this->sendResponse(true, 'Articles fetched successfully', $articles);
     }
 
     /**
      * Get a single Article.
      *
      * @param string $id
-     * @return Article|null
+     * @return JsonResponse
      */
-    public function show(string $id): ? Article
+    public function show(string $id): JsonResponse
     {
-        return $this->articleService->show($id);
+        $article = $this->articleService->getArticleById($id);
+        return $this->sendResponse(true, 'Article fetched successfully', $article);
     }
 }

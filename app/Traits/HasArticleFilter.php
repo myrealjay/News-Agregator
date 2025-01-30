@@ -68,6 +68,8 @@ trait HasArticleFilter
 
         if (!$preferences) return $query;
 
+        //Fetch by user preferences if the user is not specifically filtering for
+        //categories, sources and authors
         $query->when($preferences->categories && !$request->filled('category'),
         function($query) use($preferences, $request) {
             return $query->whereIn('category', $preferences->categories);
@@ -76,7 +78,7 @@ trait HasArticleFilter
         function($query) use ($preferences, $request) {
             return $query->whereIn('source', $preferences->sources);
         })
-        ->when($preferences->authors && $request->filled('author'),
+        ->when($preferences->authors && !$request->filled('author'),
         function($query) use ($preferences, $request) {
             return $query->whereIn('author', $preferences->authors);
         });
