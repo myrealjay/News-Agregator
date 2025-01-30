@@ -35,4 +35,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (HttpException $e, $request) use($responder) {
             return $responder->sendResponse(false, $e->getMessage(), [], $e->getStatusCode());
         });
+
+        $exceptions->render(function (Exception $e, $request) use($responder) {
+            return $responder->sendResponse(
+                false,
+                "Something went wrong, it's not you, it's us and we will resolve it shortly",
+                [],
+                500
+            );
+        });
     })->create();
