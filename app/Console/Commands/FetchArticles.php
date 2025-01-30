@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\NewsProviderResolver;
+use App\Contexts\NewsAgregator;
+use App\Events\ArticlesFetched;
 use App\Models\Article;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 
 class FetchArticles extends Command
 {
@@ -32,46 +33,25 @@ class FetchArticles extends Command
 
         $sources = config('aggregator.news_sources');
 
-        foreach($sources as $source) {
+        foreach ($sources as $source) {
             $this->info("fetching for $source");
 
-            $provider = NewsProviderResolver::resolveNewsProvider($source);
-            $response = $provider->fetchArticles(config('aggregator.query_parameters'));
+            $aggregator = new NewsAgregator($source);
 
-            foreach($response as $article) {
-                $data = $provider->formatData(($article));
+            foreach ($aggregator->fetchArticles() as $article) {
+                $data = $aggregator->formatData($article);
 
                 Article::updateOrCreate(
-                    ['url' => $data['url']],
+                    [
+                        'url' => $data['url']
+                    ],
                     $data
                 );
             }
         }
 
-        $this->deleteCahceKeys();
+        Event::dispatch(new ArticlesFetched);
+
         $this->info('Done fetching articles.');
-    }
-
-    /**
-     * Forget cahced keys.
-     *
-     * @return void
-     */
-    protected function deleteCahceKeys(): void
-    {
-         //Remove cache so new items can reflect
-         $allcacheKeys = [];
-         if (Cache::has('allkeys')) {
-             $allcacheKeys = Cache::get('allkeys');
-         }
-
-         if (count($allcacheKeys)) {
-             foreach($allcacheKeys as $key) {
-                Cache::forget($key);
-             }
-
-             Cache::forget('allkeys');
-         }
-
     }
 }

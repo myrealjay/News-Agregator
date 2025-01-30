@@ -18,7 +18,7 @@ interface NewsProviderContract
      *
      * @param array $data
      *
-     * @return void
+     * @return array
      */
     public function formatData(array $data): array;
 }
