@@ -38,15 +38,19 @@ class FetchArticles extends Command
 
             $aggregator = new NewsAgregator($source);
 
-            foreach ($aggregator->fetchArticles() as $article) {
-                $data = $aggregator->formatData($article);
+            while($aggregator->hasNext()) {
+                $this->info("Still fetching for $source");
 
-                Article::updateOrCreate(
-                    [
-                        'url' => $data['url']
-                    ],
-                    $data
-                );
+                foreach ($aggregator->fetchArticles() as $article) {
+                    $data = $aggregator->formatData($article);
+
+                    Article::updateOrCreate(
+                        [
+                            'url' => $data['url']
+                        ],
+                        $data
+                    );
+                }
             }
         }
 

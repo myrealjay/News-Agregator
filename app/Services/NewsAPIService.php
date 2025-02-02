@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Contracts\NewsProviderContract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class NewsAPIService implements NewsProviderContract
+class NewsAPIService extends NewsServiceBase
 {
     /**
      * @inheritDoc
      */
     public function fetchArticles(array $params = []): array
     {
+        if (!$this->isInitialRequest) $this->page += 1;
         $baseUrl = trim(config('services.newsapi.baseUrl'), '/');
         $apiKey = config('services.newsapi.apiKey');
 
@@ -24,10 +24,17 @@ class NewsAPIService implements NewsProviderContract
             )->json();
         } catch(\Exception $exception) {
             Log::error($exception);
+            $this->isInitialRequest = false;
+            $this->hasData = false;
             return [];
         }
 
-        return $response['articles'] ?? [];
+        $this->isInitialRequest = false;
+        $data = $response['articles'] ?? [];
+
+        $this->hasData = count($data) > 0;
+
+        return $data;
     }
 
     /**

@@ -21,4 +21,11 @@ interface NewsProviderContract
      * @return array
      */
     public function formatData(array $data): array;
+
+    /**
+     *Check whether request should continue.
+     *
+     * @return bool
+     */
+    public function hasNext(): bool;
 }

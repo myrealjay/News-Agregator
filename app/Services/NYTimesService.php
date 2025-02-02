@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Contracts\NewsProviderContract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class NYTimesService implements NewsProviderContract
+class NYTimesService extends NewsServiceBase
 {
     /**
      * @inheritDoc
      */
     public function fetchArticles(array $params = []): array
     {
+        if (!$this->isInitialRequest) $this->page += 1;
         $params = [];
         $baseUrl = trim(config('services.nytimes.baseUrl'), '/');
         $apiKey = config('services.nytimes.apiKey');
@@ -25,10 +25,16 @@ class NYTimesService implements NewsProviderContract
             )->json();
         } catch(\Exception $exception) {
             Log::error($exception);
+            $this->isInitialRequest = false;
+            $this->hasData = false;
             return [];
         }
 
-        return $response['results'] ?? [];
+        $this->isInitialRequest = false;
+        $data = $response['results'] ?? [];
+        $this->hasData = count($data) > 0;
+
+        return $data;
     }
 
     /**
