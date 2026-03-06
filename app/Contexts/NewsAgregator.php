@@ -5,7 +5,7 @@ namespace App\Contexts;
 use App\Contracts\NewsProviderContract;
 use App\Helpers\NewsProviderResolver;
 
-class NewsAgregator
+class NewsAgregator implements NewsProviderContract
 {
     /**
      * The news provider.
@@ -30,8 +30,9 @@ class NewsAgregator
      *
      * @return array
      */
-    public function fetchArticles(): array
+    public function fetchArticles(array $params = []): array
     {
+        if (count($params)) $this->filters = $params;
         return $this->newsProvider->fetchArticles($this->filters);
     }
 
@@ -43,5 +44,13 @@ class NewsAgregator
     public function formatData(array $data): array
     {
         return $this->newsProvider->formatData($data);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasNext(): bool
+    {
+        return $this->newsProvider->hasNext();
     }
 }

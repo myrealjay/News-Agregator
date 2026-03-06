@@ -2,32 +2,39 @@
 
 namespace App\Services;
 
-use App\Contracts\NewsProviderContract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class GuardianService implements NewsProviderContract
+class GuardianService extends NewsServiceBase
 {
     /**
      * @inheritDoc
      */
     public function fetchArticles(array $params = []): array
     {
+        if (!$this->isInitialRequest) $this->page += 1;
         $baseUrl = trim(config('services.guardian.baseUrl'), '/');
         $apiKey = config('services.guardian.apiKey');
 
         try {
             $response = Http::get(
             "{$baseUrl}/search",
-            array_merge($params, ['api-key' => $apiKey])
+            array_merge($params, ['api-key' => $apiKey, 'page' => $this->page])
             )->json();
         } catch(\Exception $exception) {
             Log::error($exception);
+            $this->isInitialRequest = false;
+            $this->hasData = false;
             return [];
         }
 
-        return $response['response']['results'] ?? [];
+        $this->isInitialRequest = false;
+
+        $data = $response['response']['results'] ?? [];
+        $this->hasData = count($data) > 0;
+
+        return $data;
     }
 
     /**
